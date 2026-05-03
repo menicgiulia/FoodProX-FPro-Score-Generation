@@ -1,0 +1,24 @@
+name: food_pro_py311
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - xgboost
+  - matplotlib
+  - seaborn
+  - plotly
+  - jupyter
+  - notebook
+  - joblib
+  - tqdm
+  - statsmodels
+  - pip
+  - pip:
+      - umap-learn
+      - tqdm-joblib
