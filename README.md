@@ -37,7 +37,7 @@ The notebook also creates a local `Models_GitHub/` directory when it is executed
   Main notebook for data loading, model training, cross-validation, scoring, and visualization.
 
 - `functions_for_evaluation.py`  
-  Helper functions for multiclass ROC-AUC, average precision, ROC/PR curves, and fold-wise model training/evaluation.
+  Helper functions for multiclass ROC-AUC (AUC), average precision/AUPRC (AUP), ROC/PR curves, and fold-wise model training/evaluation.
 
 - `scoring.py`  
   Contains `classify_db`, which applies trained fold-specific models to a food database and computes averaged class probabilities and FPro scores.
@@ -81,7 +81,7 @@ Rows with `novaclass = 0` become `pythonlabel = -1` and are excluded from model 
 
 ## Definition of FPro
 
-For each food item $k$, the trained classifiers output a probability vector $p^k = (p_1^k, p_2^k, p_3^k, p_4^k)$, where $p_i^k$ is the predicted probability that item $k$ belongs to NOVA class $i$. Formally, FPro is defined as the orthogonal projection of the food’s class-probability vector $p^k$ onto the line within the probability simplex that extends from the minimally processed vertex $(1,0,0,0)$ to the ultra-processed vertex $(0,0,0,1)$. The score for item $k$ is therefore given by
+For each food item $k$, the trained classifiers output a probability vector $p^k = (p_1^k, p_2^k, p_3^k, p_4^k)$, where $p_i^k$ is the predicted probability that item $k$ belongs to NOVA class $i$. Formally, $FPro$ is defined as the orthogonal projection of the food’s class-probability vector $p^k$ onto the line within the probability simplex that extends from the minimally processed vertex $(1,0,0,0)$ to the ultra-processed vertex $(0,0,0,1)$. The score for item $k$ is therefore given by
 
 $\mathrm{FPro}_k = \frac{1 - p_1^k + p_4^k}{2}.$
 
@@ -93,9 +93,9 @@ The notebook trains four random-forest model variants:
 
 | Model | Feature set | Training-set definition |
 |---|---|---|
-| Model 1 | 58 nutrients | Full food profiles |
+| Model 1 | 58 nutrients | Full food profiles (Unique food code, nova class, nutrient profile) |
 | Model 2 | 58 nutrients | Unique NOVA–nutrient profile pairs |
-| Model 3 | 57 NDSR-compatible nutrients | Full food profiles |
+| Model 3 | 57 NDSR-compatible nutrients | Full food profiles (Unique food code, nova class, nutrient profile) |
 | Model 4 | 57 NDSR-compatible nutrients | Unique NOVA–nutrient profile pairs |
 
 The 57-nutrient models are intended for studies that rely on NDSR-compatible nutrient profiles.
@@ -116,7 +116,7 @@ This choice reflects the objective of the model. The classifier is not used prim
 
 We deliberately avoided exhaustive hyperparameter tuning for two reasons. First, the labeled reference set is relatively large compared with the number of nutrient features, and the random-forest model already achieves strong cross-validated discrimination across NOVA classes. Second, hyperparameter tuning would require withholding additional data or introducing a nested model-selection layer, whereas our priority was to expose the model to as much labeled information as possible to improve the stability and resolution of the FPro probability surface.
 
-This decision is also supported by previous FoodProX analyses and by sensitivity checks in the present implementation, which showed that random-forest performance and FPro behavior were stable across reasonable hyperparameter choices. In particular, allowing deeper trees did not materially change cross-validated AUC or average precision across the evaluated model variants. We therefore retained a single fixed configuration for all models to ensure comparability across nutrient panels and training-set definitions.
+This decision is also supported by previous FoodProX analyses and by sensitivity checks in the present implementation, which showed that random-forest performance and FPro behavior were stable across a wide range of hyperparameter choices. In particular, allowing deeper trees did not materially change cross-validated AUC or average precision across the evaluated model variants. We therefore retained a single fixed configuration for all models to ensure comparability across nutrient panels and training-set definitions.
 
 ## Installation
 
