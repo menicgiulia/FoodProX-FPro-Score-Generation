@@ -81,33 +81,11 @@ Rows with `novaclass = 0` become `pythonlabel = -1` and are excluded from model 
 
 ## Definition of FPro
 
-For each food item \(k\), the trained classifiers output a probability vector
+For each food item $k$, the trained classifiers output a probability vector $p^k = (p_1^k, p_2^k, p_3^k, p_4^k)$, where $p_i^k$ is the predicted probability that item $k$ belongs to NOVA class $i$. Formally, FPro is defined as the orthogonal projection of the food’s class-probability vector $p^k$ onto the line within the probability simplex that extends from the minimally processed vertex $(1,0,0,0)$ to the ultra-processed vertex $(0,0,0,1)$. The score for item $k$ is therefore given by
 
-\[
-p^k = (p_1^k, p_2^k, p_3^k, p_4^k),
-\]
+$\mathrm{FPro}_k = \frac{1 - p_1^k + p_4^k}{2}.$
 
-where \(p_i^k\) is the predicted probability that item \(k\) belongs to NOVA class \(i\).
-
-FPro is defined as the orthogonal projection of the food’s class-probability vector \(p^k\) onto the line within the probability simplex that extends from the minimally processed vertex
-
-\[
-(1,0,0,0)
-\]
-
-to the ultra-processed vertex
-
-\[
-(0,0,0,1).
-\]
-
-The score for item \(k\) is:
-
-\[
-\mathrm{FPro}_k = \frac{1 - p_1^k + p_4^k}{2}.
-\]
-
-This formulation maps the minimally processed vertex to \(\mathrm{FPro}=0\) and the ultra-processed vertex to \(\mathrm{FPro}=1\).
+This formulation maps the minimally processed vertex to $\mathrm{FPro}=0$ and the ultra-processed vertex to $\mathrm{FPro}=1$.
 
 ## Model variants
 
